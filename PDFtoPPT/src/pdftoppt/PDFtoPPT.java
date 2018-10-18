@@ -5,9 +5,12 @@
  */
 package pdftoppt;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 
 
@@ -23,8 +26,19 @@ public class PDFtoPPT {
     public static void main(String[] args) throws FileNotFoundException, IOException{
         JFrame parent = new JFrame();
         XMLSlideShow ppt = new XMLSlideShow();
-         
+        PDDocument pdf = new PDDocument();
+        PDFRenderer pdfRender;
         JFileChooser fileChooser = new JFileChooser();
+        File pdfFile;
+        
+        if(fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION){
+            pdfFile = fileChooser.getSelectedFile();
+            pdf.load(pdfFile);
+            pdfRender = new PDFRenderer(pdf);
+            BufferedImage image = pdfRender.renderImage(0);
+            
+        }
+        
         if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
             String filename = fileChooser.getSelectedFile().toString();
             if(!filename.endsWith(".pptx")){
