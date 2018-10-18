@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.poi.sl.usermodel.PictureData;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 
 
@@ -30,12 +31,13 @@ public class PDFtoPPT {
         PDFRenderer pdfRender;
         JFileChooser fileChooser = new JFileChooser();
         File pdfFile;
+        BufferedImage image;
         
         if(fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION){
             pdfFile = fileChooser.getSelectedFile();
             pdf.load(pdfFile);
             pdfRender = new PDFRenderer(pdf);
-            BufferedImage image = pdfRender.renderImage(0);
+            image = pdfRender.renderImage(0);
             
         }
         
@@ -46,9 +48,12 @@ public class PDFtoPPT {
             }
             
             File file = new File(filename);
+            
             //File file = fileChooser.getSelectedFile();
             FileOutputStream out = new FileOutputStream(file);
             ppt.createSlide();
+            
+            //ppt.addPicture(image, PictureData.PictureType.EMF);
             ppt.write(out);            
             
         }
