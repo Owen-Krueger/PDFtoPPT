@@ -24,11 +24,22 @@ import org.apache.poi.xslf.usermodel.XSLFSlide;
  */
 public class ConvertFile {
     
+    public static void main() throws IOException{
+        File pdf = openPDF();
+        File ppt = selectPPT();
+        XMLSlideShow ss = new XMLSlideShow();
+        
+        ArrayList images = convertImages(readPDF(pdf));
+        
+        ss = addImages(ss, images);
+        finishFile(ppt, ss);
+    }
+    
     /**
      * Prompts user to select PDF file to open
      * @return File pdf file
      */
-    public File openPDF(){
+    public static File openPDF(){
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         
@@ -48,7 +59,7 @@ public class ConvertFile {
      * Prompts user with save location for .pptx file
      * @return File PowerPoint file
      */
-    public File savePPT(){
+    public static File selectPPT(){
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         
@@ -70,7 +81,7 @@ public class ConvertFile {
      * @return ArrayList<BufferedImage> image of each PDF page
      * @throws IOException throws IO exception if fails to load pdfFile
      */
-    public ArrayList<BufferedImage> readPDF(File pdfFile) throws IOException{
+    public static ArrayList<BufferedImage> readPDF(File pdfFile) throws IOException{
         PDDocument pdfDoc = new PDDocument();
         pdfDoc = pdfDoc.load(pdfFile);
         ArrayList images = new ArrayList<>();
@@ -89,7 +100,7 @@ public class ConvertFile {
      * @return ArrayList<byte[]> array of converted images
      * @throws IOException throws IO exception if fails to write image to ByteArray
      */
-    public ArrayList<byte[]> convertImages(ArrayList<BufferedImage> images) throws IOException{
+    public static ArrayList<byte[]> convertImages(ArrayList<BufferedImage> images) throws IOException{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ArrayList<byte[]> pictures = new ArrayList<>();
         
@@ -103,12 +114,12 @@ public class ConvertFile {
     }
     
     /**
-     * 
-     * @param ppt
-     * @param pictures
-     * @return 
+     * Added images to PowerPoint slides
+     * @param ppt PowerPoint presentation to add pictures to
+     * @param pictures Array of pictures to add to presentation
+     * @return PowerPoint presentation
      */
-    public XMLSlideShow addImages(XMLSlideShow ppt, ArrayList<byte[]> pictures){
+    public static XMLSlideShow addImages(XMLSlideShow ppt, ArrayList<byte[]> pictures){
         PictureData pd;
         XSLFSlide slide;
         XSLFPictureShape ps;
@@ -129,7 +140,7 @@ public class ConvertFile {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public void finishFile(File outFile, XMLSlideShow ppt) throws FileNotFoundException, IOException{
+    public static void finishFile(File outFile, XMLSlideShow ppt) throws FileNotFoundException, IOException{
         FileOutputStream out = new FileOutputStream(outFile);
         ppt.write(out);
     }
