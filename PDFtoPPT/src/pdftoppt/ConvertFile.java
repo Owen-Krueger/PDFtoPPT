@@ -108,6 +108,8 @@ public class ConvertFile {
             ImageIO.write(image, "jpg", baos);
             byte[] imageByte = baos.toByteArray();
             pictures.add(imageByte);
+            baos.flush();
+            baos.reset();
         }
         
         return pictures;
@@ -125,8 +127,8 @@ public class ConvertFile {
         XSLFPictureShape ps;
         
         for(byte[] picture : pictures){
-            pd = ppt.addPicture(picture, XSLFPictureData.PictureType.JPEG);
             slide = ppt.createSlide();
+            pd = ppt.addPicture(picture, XSLFPictureData.PictureType.JPEG);
             ps = slide.createPicture(pd);
         }
         
