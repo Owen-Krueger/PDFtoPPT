@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author owk91
+ * @author Owen-Krueger
  */
 public class MainGUI extends javax.swing.JFrame {
 
@@ -79,7 +79,13 @@ public class MainGUI extends javax.swing.JFrame {
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
         try {
             ConvertFile.main();
-        } catch (Exception ex) {
+            if(JOptionPane.showConfirmDialog(null, "File successfully converted! "
+                    + "\n\nDo you want to convert another file?", "File Converted!", 
+                JOptionPane.INFORMATION_MESSAGE) == JOptionPane.NO_OPTION){
+                    System.exit(0);
+                }
+            
+        } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Alert!", JOptionPane.INFORMATION_MESSAGE);
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.poi.sl.usermodel.PictureData;
@@ -21,22 +22,33 @@ import org.apache.poi.xslf.usermodel.XSLFSlide;
 
 /**
  *
- * @author owk91
+ * @author Owen-Krueger
  */
 public class ConvertFile {
     
+    /**
+     * Main method. Run from "convert" button on Main GUI
+     * @throws IOException throw if PDF/PPT not selected
+     */
     public static void main() throws IOException{
         try{
+            //Try to select PDF to open
             File pdf = openPDF();
+            //Try to select PPT to save to
             File ppt = selectPPT();
             XMLSlideShow ss = new XMLSlideShow();
 
+            //Convert images from PDF
             ArrayList images = convertImages(readPDF(pdf));
 
+            //Add images to slideshow
             ss = addImages(ss, images);
+            
+            //Finish outputting file to PowerPoint file
             finishFile(ppt, ss);
         }
         catch(IOException e){
+            //If IOException is thrown
             throw new IOException(e.getMessage());
         }
     }
@@ -49,9 +61,12 @@ public class ConvertFile {
     public static File openPDF() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Documents (.pdf)", "pdf"));
         
+        //Choose PDF file to open
         if(fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION){
             String filename = fileChooser.getSelectedFile().toString();
+            //If file doesn't end in a PDF
             if(!filename.endsWith(".pdf")){
                 openPDF();
             }
@@ -70,6 +85,7 @@ public class ConvertFile {
     public static File selectPPT() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PowerPoint File (.pptx)", "pptx"));
         
         if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
             String filename = fileChooser.getSelectedFile().toString();
