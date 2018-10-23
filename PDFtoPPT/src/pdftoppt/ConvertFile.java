@@ -61,6 +61,7 @@ public class ConvertFile {
     public static File openPDF() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
+        //Filter only PDF documents
         fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Documents (.pdf)", "pdf"));
         
         //Choose PDF file to open
@@ -73,6 +74,7 @@ public class ConvertFile {
             return fileChooser.getSelectedFile();
         }
         else {
+            //If no PDF selected
             throw new IOException("No PDF Selected");
         }
     }
@@ -85,16 +87,20 @@ public class ConvertFile {
     public static File selectPPT() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
+        //Filter only PowerPoint documments
         fileChooser.setFileFilter(new FileNameExtensionFilter("PowerPoint File (.pptx)", "pptx"));
         
+        //Chose .pptx file to output to
         if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
             String filename = fileChooser.getSelectedFile().toString();
+            //If input doesn't end in .pptx
             if(!filename.endsWith(".pptx")){
                 filename += ".pptx";
             }
             return new File(filename);
         }
         else {
+            //If no output selected
             throw new IOException("No Output Selected");
         }
     }
@@ -107,11 +113,13 @@ public class ConvertFile {
      */
     public static ArrayList<BufferedImage> readPDF(File pdfFile) throws IOException{
         PDDocument pdfDoc = new PDDocument();
+        //Load PDF from user chosen file
         pdfDoc = pdfDoc.load(pdfFile);
         ArrayList images = new ArrayList<>();
         
         PDFRenderer pdfRenderer = new PDFRenderer(pdfDoc);
         
+        //Render images from file (per page)
         for(int i = 0; i < pdfDoc.getNumberOfPages(); i++){
             images.add(pdfRenderer.renderImage(i));
         }
@@ -128,6 +136,7 @@ public class ConvertFile {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ArrayList<byte[]> pictures = new ArrayList<>();
         
+        //Create byte array from each image
         for (BufferedImage image : images) {
             ImageIO.write(image, "jpg", baos);
             byte[] imageByte = baos.toByteArray();
@@ -150,6 +159,7 @@ public class ConvertFile {
         XSLFSlide slide;
         XSLFPictureShape ps;
         
+        //Add pictures to each slide
         for(byte[] picture : pictures){
             slide = ppt.createSlide();
             pd = ppt.addPicture(picture, XSLFPictureData.PictureType.JPEG);
@@ -160,13 +170,14 @@ public class ConvertFile {
     }
     
     /**
-     * 
-     * @param outFile
-     * @param ppt
-     * @throws FileNotFoundException
-     * @throws IOException 
+     * Finish File output
+     * @param outFile File to output to
+     * @param ppt Slideshow being outputted to file
+     * @throws FileNotFoundException if file not found
+     * @throws IOException if input/output issues
      */
     public static void finishFile(File outFile, XMLSlideShow ppt) throws FileNotFoundException, IOException{
+        //Output to .pptx file
         FileOutputStream out = new FileOutputStream(outFile);
         ppt.write(out);
     }
