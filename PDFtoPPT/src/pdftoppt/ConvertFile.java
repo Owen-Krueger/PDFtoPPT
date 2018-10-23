@@ -18,6 +18,7 @@ import org.apache.poi.xslf.usermodel.XSLFPictureData;
 import org.apache.poi.xslf.usermodel.XSLFPictureShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 
+
 /**
  *
  * @author owk91
@@ -25,21 +26,27 @@ import org.apache.poi.xslf.usermodel.XSLFSlide;
 public class ConvertFile {
     
     public static void main() throws IOException{
-        File pdf = openPDF();
-        File ppt = selectPPT();
-        XMLSlideShow ss = new XMLSlideShow();
-        
-        ArrayList images = convertImages(readPDF(pdf));
-        
-        ss = addImages(ss, images);
-        finishFile(ppt, ss);
+        try{
+            File pdf = openPDF();
+            File ppt = selectPPT();
+            XMLSlideShow ss = new XMLSlideShow();
+
+            ArrayList images = convertImages(readPDF(pdf));
+
+            ss = addImages(ss, images);
+            finishFile(ppt, ss);
+        }
+        catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
     }
     
     /**
      * Prompts user to select PDF file to open
      * @return File pdf file
+     * @throws java.io.IOException
      */
-    public static File openPDF(){
+    public static File openPDF() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         
@@ -51,15 +58,16 @@ public class ConvertFile {
             return fileChooser.getSelectedFile();
         }
         else {
-            return null;
+            throw new IOException("No PDF Selected");
         }
     }
     
     /**
      * Prompts user with save location for .pptx file
      * @return File PowerPoint file
+     * @throws java.io.IOException
      */
-    public static File selectPPT(){
+    public static File selectPPT() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         
@@ -71,7 +79,7 @@ public class ConvertFile {
             return new File(filename);
         }
         else {
-            return null;
+            throw new IOException("No Output Selected");
         }
     }
     

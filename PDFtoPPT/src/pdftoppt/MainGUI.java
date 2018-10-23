@@ -6,8 +6,10 @@
 package pdftoppt;
 
 import java.io.IOException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -65,7 +67,8 @@ public class MainGUI extends javax.swing.JFrame {
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
         try {
             ConvertFile.main();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Alert", JOptionPane.INFORMATION_MESSAGE);
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnConvertActionPerformed
