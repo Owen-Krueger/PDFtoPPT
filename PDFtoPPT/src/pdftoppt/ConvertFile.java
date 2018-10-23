@@ -59,7 +59,7 @@ public class ConvertFile {
      * @return File pdf file
      * @throws java.io.IOException
      */
-    public static File openPDF() throws IOException{
+    private static File openPDF() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         //Filter only PDF documents
@@ -85,7 +85,7 @@ public class ConvertFile {
      * @return File PowerPoint file
      * @throws java.io.IOException
      */
-    public static File selectPPT() throws IOException{
+    private static File selectPPT() throws IOException{
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooser();
         //Filter only PowerPoint documments
@@ -112,7 +112,7 @@ public class ConvertFile {
      * @return ArrayList<BufferedImage> image of each PDF page
      * @throws IOException throws IO exception if fails to load pdfFile
      */
-    public static ArrayList<BufferedImage> readPDF(File pdfFile) throws IOException{
+    private static ArrayList<BufferedImage> readPDF(File pdfFile) throws IOException{
         PDDocument pdfDoc = new PDDocument();
         //Load PDF from user chosen file
         pdfDoc = pdfDoc.load(pdfFile);
@@ -133,7 +133,7 @@ public class ConvertFile {
      * @return ArrayList<byte[]> array of converted images
      * @throws IOException throws IO exception if fails to write image to ByteArray
      */
-    public static ArrayList<byte[]> convertImages(ArrayList<BufferedImage> images) throws IOException{
+    private static ArrayList<byte[]> convertImages(ArrayList<BufferedImage> images) throws IOException{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ArrayList<byte[]> pictures = new ArrayList<>();
         
@@ -156,7 +156,7 @@ public class ConvertFile {
      * @param pictures Array of pictures to add to presentation
      * @return PowerPoint presentation
      */
-    public static XMLSlideShow addImages(XMLSlideShow ppt, ArrayList<byte[]> pictures){
+    private static XMLSlideShow addImages(XMLSlideShow ppt, ArrayList<byte[]> pictures){
         PictureData pd;
         XSLFSlide slide;
         XSLFPictureShape ps;
@@ -179,7 +179,7 @@ public class ConvertFile {
      * @throws FileNotFoundException if file not found
      * @throws IOException if input/output issues
      */
-    public static void finishFile(File outFile, XMLSlideShow ppt) throws FileNotFoundException, IOException{
+    private static void finishFile(File outFile, XMLSlideShow ppt) throws FileNotFoundException, IOException{
         //Output to .pptx file
         FileOutputStream out = new FileOutputStream(outFile);
         ppt.write(out);
