@@ -37,6 +37,7 @@ public class ConvertFile {
             //Try to select PPT to save to
             File ppt = selectPPT();
             XMLSlideShow ss = new XMLSlideShow();
+            ss.setPageSize(new java.awt.Dimension(720, 405));
 
             //Convert images from PDF
             ArrayList images = convertImages(readPDF(pdf));
@@ -138,6 +139,7 @@ public class ConvertFile {
         
         //Create byte array from each image
         for (BufferedImage image : images) {
+            //System.out.println(image.getHeight() + " / " + image.getWidth());
             ImageIO.write(image, "jpg", baos);
             byte[] imageByte = baos.toByteArray();
             pictures.add(imageByte);
@@ -162,6 +164,7 @@ public class ConvertFile {
         //Add pictures to each slide
         for(byte[] picture : pictures){
             slide = ppt.createSlide();
+            System.out.println(slide.getSlideLayout());
             pd = ppt.addPicture(picture, XSLFPictureData.PictureType.JPEG);
             ps = slide.createPicture(pd);
         }
